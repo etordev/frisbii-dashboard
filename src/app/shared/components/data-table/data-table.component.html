@@ -16,7 +16,7 @@
         [class.clickable-row]="true"
       >
         @for (col of config().columns; track col.key) {
-          <td>{{ getCellValue(row, col.key, col.formatter) }}</td>
+          <td [ngClass]="col.cellClass?.(row)">{{ getCellValue(row, col.key, col.formatter) }}</td>
         }
         @if (config().actions?.length) {
           <td class="actions-cell">

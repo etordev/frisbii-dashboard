@@ -1,9 +1,11 @@
 import { Component, input, output } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { TableConfig } from '../../models/table-config.model';
 
 @Component({
   selector: 'data-table',
   standalone: true,
+  imports: [NgClass],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
 })

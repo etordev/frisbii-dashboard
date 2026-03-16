@@ -6,6 +6,8 @@ export interface TableColumnConfig<T> {
   header: string;
   /* Optional formatter for cell display (e.g. concatenate names, format date). */
   formatter?: (row: T) => string;
+  /* Optional CSS class(es) for the cell (e.g. state badge). */
+  cellClass?: (row: T) => string;
 }
 
 /* Action button definition for the table.*/
