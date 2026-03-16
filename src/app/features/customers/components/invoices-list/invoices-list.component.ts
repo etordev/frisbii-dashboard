@@ -14,7 +14,7 @@ export type InvoiceStateDisplay =
   | 'unknown';
 
 @Component({
-  selector: 'app-invoices-list',
+  selector: 'invoices-list',
   standalone: true,
   imports: [DatePipe],
   templateUrl: './invoices-list.component.html',

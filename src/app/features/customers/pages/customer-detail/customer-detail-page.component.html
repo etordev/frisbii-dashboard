@@ -1,8 +1,8 @@
 <section>
   @if (loading()) {
-    <app-loading-spinner />
+    <loading-spinner />
   } @else if (error()) {
-    <app-empty-state [message]="error()!" type="error" />
+    <empty-state [message]="error()!" type="error" />
   } @else {
     @let c = customer();
     <h2>
@@ -25,7 +25,7 @@
     <div class="table-section">
       <h3>Subscriptions</h3>
       @if (subscriptions().length === 0) {
-        <app-empty-state message="No subscriptions." />
+        <empty-state message="No subscriptions." />
       } @else {
         <data-table
           [data]="subscriptions()"
@@ -38,9 +38,9 @@
     <div class="table-section">
       <h3>Invoices</h3>
       @if (invoices().length === 0) {
-        <app-empty-state message="No invoices." />
+        <empty-state message="No invoices." />
       } @else {
-        <app-invoices-list [invoices]="invoices()" />
+        <invoices-list [invoices]="invoices()" />
       }
     </div>
   }

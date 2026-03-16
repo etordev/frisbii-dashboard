@@ -13,11 +13,11 @@
   </div>
 
   @if (loading()) {
-    <app-loading-spinner />
+    <loading-spinner />
   } @else if (error()) {
-    <app-empty-state [message]="error()!" type="error" />
+    <empty-state [message]="error()!" type="error" />
   } @else if (customers().length === 0) {
-    <app-empty-state message="No customers found." />
+    <empty-state message="No customers found." />
   } @else {
     <data-table
       [data]="customers()"

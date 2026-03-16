@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 export type EmptyStateType = 'empty' | 'error';
 
 @Component({
-  selector: 'app-empty-state',
+  selector: 'empty-state',
   standalone: true,
   templateUrl: './empty-state.component.html',
   styleUrl: './empty-state.component.css',

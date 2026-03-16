@@ -14,7 +14,7 @@ import { ApiError } from '../../../../core/services/api.service';
 const PAGE_SIZE = 50;
 
 @Component({
-  selector: 'app-customers-list-page',
+  selector: 'customers-list-page',
   standalone: true,
   imports: [
     DatePipe,
