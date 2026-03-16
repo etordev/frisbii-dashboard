@@ -6,12 +6,12 @@ table {
 thead th {
   text-align: left;
   padding: 0.5rem 0.75rem;
-  border-bottom: 2px solid oklch(0.75 0.02 264);
+  border-bottom: 2px solid #a8acb8;
 }
 
 tbody td {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid oklch(0.9 0.01 264);
+  border-bottom: 1px solid #e4e6e9;
 }
 
 .clickable-row {
@@ -19,7 +19,7 @@ tbody td {
 }
 
 .clickable-row:hover {
-  background-color: oklch(0.96 0.01 264);
+  background-color: #f4f5f6;
 }
 
 .actions-cell {

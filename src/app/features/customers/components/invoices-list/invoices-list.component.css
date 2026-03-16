@@ -1,0 +1,53 @@
+.invoices-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoices-table thead th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid #a8acb8;
+}
+
+.invoices-table tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e4e6e9;
+}
+
+.state-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.state-created {
+  background-color: #d4d8eb;
+  color: #2a2d4a;
+}
+
+.state-pending {
+  background-color: #f0e6c4;
+  color: #5c5016;
+}
+
+.state-settled {
+  background-color: #c8e6d0;
+  color: #1a3d22;
+}
+
+.state-authorized {
+  background-color: #c8d4eb;
+  color: #2a3560;
+}
+
+.state-failed {
+  background-color: #f5d8d8;
+  color: #8b3a3a;
+}
+
+.state-unknown {
+  background-color: #e8e9ec;
+  color: #6e7076;
+}

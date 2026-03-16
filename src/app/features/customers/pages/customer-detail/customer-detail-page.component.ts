@@ -11,6 +11,7 @@ import { Subscription } from '../../../../shared/models/subscription.model';
 import { Invoice } from '../../../../shared/models/invoice.model';
 import { TableConfig } from '../../../../shared/models/table-config.model';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
+import { InvoicesListComponent } from '../../components/invoices-list/invoices-list.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { ApiError } from '../../../../core/services/api.service';
@@ -23,6 +24,7 @@ const PAGE_SIZE = 50;
   imports: [
     DatePipe,
     DataTableComponent,
+    InvoicesListComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
   ],
@@ -66,25 +68,6 @@ export class CustomerDetailPageComponent implements OnInit {
         id: 'reactivate',
         label: 'Reactivate',
         visible: (row) => row.state === 'on_hold',
-      },
-    ],
-  };
-
-  readonly invoiceTableConfig: TableConfig<Invoice> = {
-    columns: [
-      { key: 'handle', header: 'Handle' },
-      { key: 'state', header: 'State' },
-      {
-        key: 'amount',
-        header: 'Amount',
-        formatter: (row) =>
-          `${row.amount} ${row.currency}`,
-      },
-      {
-        key: 'created',
-        header: 'Created',
-        formatter: (row) =>
-          this.datePipe.transform(row.created, 'mediumDate') ?? '',
       },
     ],
   };

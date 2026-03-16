@@ -40,10 +40,7 @@
       @if (invoices().length === 0) {
         <app-empty-state message="No invoices." />
       } @else {
-        <data-table
-          [data]="invoices()"
-          [config]="invoiceTableConfig"
-        />
+        <app-invoices-list [invoices]="invoices()" />
       }
     </div>
   }
