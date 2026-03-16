@@ -1,0 +1,30 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: oklch(0.5 0.15 264);
+}
+
+.empty-state[data-type='error'] .empty-state-icon {
+  color: oklch(0.55 0.2 25);
+}
+
+.empty-state-message {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: oklch(0.45 0.02 264);
+}
+
+.empty-state[data-type='error'] .empty-state-message {
+  color: oklch(0.4 0.08 25);
+}

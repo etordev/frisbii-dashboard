@@ -1,0 +1,4 @@
+<div class="empty-state" [attr.data-type]="type()">
+  <span class="empty-state-icon" aria-hidden="true">{{ type() === 'error' ? '!' : '—' }}</span>
+  <p class="empty-state-message">{{ message() }}</p>
+</div>
