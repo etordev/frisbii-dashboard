@@ -48,8 +48,8 @@ export class CustomerDetailPageComponent implements OnInit {
 
   readonly subscriptionTableConfig: TableConfig<Subscription> = {
     columns: [
-      { key: 'handle', header: 'Handle' },
       { key: 'state', header: 'State' },
+      { key: 'handle', header: 'Handle' },
       { key: 'plan', header: 'Plan' },
       {
         key: 'created',
