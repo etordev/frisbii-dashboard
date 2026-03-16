@@ -19,7 +19,7 @@
   } @else if (customers().length === 0) {
     <app-empty-state message="No customers found." />
   } @else {
-    <app-data-table
+    <data-table
       [data]="customers()"
       [config]="customerTableConfig"
       (rowClick)="goToCustomer($event.handle)"

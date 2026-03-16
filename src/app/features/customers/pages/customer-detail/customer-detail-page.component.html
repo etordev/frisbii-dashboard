@@ -1,42 +1,50 @@
 <section>
-  <h2>Customer: {{ customerHandle() }}</h2>
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (error()) {
+    <app-empty-state [message]="error()!" type="error" />
+  } @else {
+    @let c = customer();
+    <h2>
+      @if (c) {
+        {{ c.first_name }} {{ c.last_name }} ({{ c.handle }})
+      } @else {
+        Customer
+      }
+    </h2>
 
-  <div class="table-section">
-    <h3>Subscriptions</h3>
-    @if (subscriptionsLoading()) {
-      <app-loading-spinner />
-    } @else if (subscriptionsError()) {
-      <app-empty-state
-        [message]="subscriptionsError()!"
-        type="error"
-      />
-    } @else if (subscriptions().length === 0) {
-      <app-empty-state message="No subscriptions." />
-    } @else {
-      <app-data-table
-        [data]="subscriptions()"
-        [config]="subscriptionTableConfig"
-        (actionClick)="onSubscriptionAction($event)"
-      />
+    @if (c) {
+      <p class="customer-meta">
+        <span>{{ c.email }}</span>
+        @if (c.company) {
+          <span> · {{ c.company }}</span>
+        }
+      </p>
     }
-  </div>
 
-  <div class="table-section">
-    <h3>Invoices</h3>
-    @if (invoicesLoading()) {
-      <app-loading-spinner />
-    } @else if (invoicesError()) {
-      <app-empty-state
-        [message]="invoicesError()!"
-        type="error"
-      />
-    } @else if (invoices().length === 0) {
-      <app-empty-state message="No invoices." />
-    } @else {
-      <app-data-table
-        [data]="invoices()"
-        [config]="invoiceTableConfig"
-      />
-    }
-  </div>
+    <div class="table-section">
+      <h3>Subscriptions</h3>
+      @if (subscriptions().length === 0) {
+        <app-empty-state message="No subscriptions." />
+      } @else {
+        <data-table
+          [data]="subscriptions()"
+          [config]="subscriptionTableConfig"
+          (actionClick)="onSubscriptionAction($event)"
+        />
+      }
+    </div>
+
+    <div class="table-section">
+      <h3>Invoices</h3>
+      @if (invoices().length === 0) {
+        <app-empty-state message="No invoices." />
+      } @else {
+        <data-table
+          [data]="invoices()"
+          [config]="invoiceTableConfig"
+        />
+      }
+    </div>
+  }
 </section>

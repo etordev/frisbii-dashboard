@@ -2,7 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { TableConfig } from '../../models/table-config.model';
 
 @Component({
-  selector: 'app-data-table',
+  selector: 'data-table',
   standalone: true,
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
