@@ -4,6 +4,7 @@ import { Subscription } from '../../../../shared/models/subscription.model';
 import { TableConfig } from '../../../../shared/models/table-config.model';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 import { SubscriptionService } from '../../services/subscription.service';
+import { ApiError } from '../../../../core/services/api.service';
 
 const KNOWN_STATES = ['active', 'cancelled', 'expired', 'on_hold'] as const;
 export type SubscriptionStateDisplay =
@@ -20,6 +21,7 @@ export type SubscriptionStateDisplay =
 export class SubscriptionsListComponent {
   subscriptions = input.required<Subscription[]>();
   refreshRequested = output<void>();
+  actionError = output<string>();
 
   private readonly subscriptionService = inject(SubscriptionService);
   private readonly datePipe = inject(DatePipe);
@@ -70,12 +72,16 @@ export class SubscriptionsListComponent {
     if (actionId === 'pause') {
       this.subscriptionService.pauseSubscription(row.handle).subscribe({
         next: () => this.refreshRequested.emit(),
-        error: () => {}
+        error: (err: ApiError) =>
+          this.actionError.emit(err?.message ?? 'Failed to pause subscription'),
       });
     } else if (actionId === 'reactivate') {
       this.subscriptionService.reactivateSubscription(row.handle).subscribe({
         next: () => this.refreshRequested.emit(),
-        error: () => {}
+        error: (err: ApiError) =>
+          this.actionError.emit(
+            err?.message ?? 'Failed to unpause subscription'
+          ),
       });
     }
   }

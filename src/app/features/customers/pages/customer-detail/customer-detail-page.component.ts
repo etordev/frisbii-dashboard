@@ -54,6 +54,10 @@ export class CustomerDetailPageComponent implements OnInit {
       });
   }
 
+  onSubscriptionActionError(message: string): void {
+    this.error.set(message);
+  }
+
   refreshSubscriptions(): void {
     const handle = this.customer()?.handle;
     if (!handle) return;

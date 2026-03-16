@@ -30,6 +30,7 @@
         <subscriptions-list
           [subscriptions]="subscriptions()"
           (refreshRequested)="refreshSubscriptions()"
+          (actionError)="onSubscriptionActionError($event)"
         />
       }
     </div>
