@@ -1,3 +1,45 @@
 <section>
-    <h2>Customers</h2>
+  <h2>Customers</h2>
+
+  <div class="search-row">
+    <label for="search-handle">Search by handle</label>
+    <input
+      id="search-handle"
+      type="text"
+      [value]="searchTerm()"
+      (input)="onSearchInput($event)"
+      placeholder="Filter by handle…"
+    />
+  </div>
+
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (error()) {
+    <app-empty-state [message]="error()!" type="error" />
+  } @else if (customers().length === 0) {
+    <app-empty-state message="No customers found." />
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Handle</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Company</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (customer of customers(); track customer.handle) {
+          <tr (click)="goToCustomer(customer.handle)" class="clickable-row">
+            <td>{{ customer.handle }}</td>
+            <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.company }}</td>
+            <td>{{ customer.created | date : 'mediumDate' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 </section>

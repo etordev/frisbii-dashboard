@@ -1,0 +1,39 @@
+.search-row {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-row label {
+  font-weight: 500;
+}
+
+.search-row input {
+  padding: 0.5rem 0.75rem;
+  min-width: 12rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid oklch(0.75 0.02 264);
+}
+
+tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid oklch(0.9 0.01 264);
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: oklch(0.96 0.01 264);
+}
