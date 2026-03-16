@@ -5,5 +5,5 @@
  */
 export const environment = {
   frisbiiApiKey: '',
-  frisbiiApiBaseUrl: '',
+  frisbiiApiBaseUrl: 'https://api.frisbii.com',
 } as const;
