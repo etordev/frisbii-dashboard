@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { CustomerService } from '../../services/customer.service';
 import { SubscriptionService } from '../../services/subscription.service';
@@ -22,6 +22,7 @@ const PAGE_SIZE = 50;
   standalone: true,
   imports: [
     DatePipe,
+    RouterLink,
     InvoicesListComponent,
     SubscriptionsListComponent,
     LoadingSpinnerComponent,
@@ -39,6 +40,7 @@ export class CustomerDetailPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly datePipe = inject(DatePipe);
 
+  readonly routeHandle = signal<string>('');
   readonly customer = signal<Customer | null>(null);
   readonly subscriptions = signal<Subscription[]>([]);
   readonly invoices = signal<Invoice[]>([]);
@@ -50,6 +52,7 @@ export class CustomerDetailPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((params) => {
         const handle = params.get('handle') ?? '';
+        this.routeHandle.set(handle);
         this.loadData(handle);
       });
   }

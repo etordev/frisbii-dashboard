@@ -1,3 +1,40 @@
+.breadcrumb {
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.breadcrumb a {
+  color: #4a5bb5;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-sep {
+  margin: 0 0.35rem;
+  color: #787a80;
+}
+
+.breadcrumb-current {
+  color: #787a80;
+}
+
+.back-row {
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  font-size: 0.9375rem;
+  color: #4a5bb5;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
 .customer-meta {
   margin-top: 0.25rem;
   color: #787a80;

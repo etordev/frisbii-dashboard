@@ -1,4 +1,18 @@
 <section>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/">Customers</a>
+    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+    <span class="breadcrumb-current">
+      @if (customer()) {
+        {{ (customer()!.first_name + ' ' + customer()!.last_name).trim() || customer()!.handle }}
+      } @else {
+        {{ routeHandle() || '...' }}
+      }
+    </span>
+  </nav>
+  <p class="back-row">
+    <a routerLink="/" class="back-link">← Back to customers</a>
+  </p>
   @if (loading()) {
     <loading-spinner />
   } @else if (error()) {
