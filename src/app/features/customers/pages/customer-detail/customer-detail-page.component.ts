@@ -9,9 +9,8 @@ import { InvoiceService } from '../../services/invoice.service';
 import { Customer } from '../../../../shared/models/customer.model';
 import { Subscription } from '../../../../shared/models/subscription.model';
 import { Invoice } from '../../../../shared/models/invoice.model';
-import { TableConfig } from '../../../../shared/models/table-config.model';
-import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 import { InvoicesListComponent } from '../../components/invoices-list/invoices-list.component';
+import { SubscriptionsListComponent } from '../../components/subscriptions-list/subscriptions-list.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { ApiError } from '../../../../core/services/api.service';
@@ -23,8 +22,8 @@ const PAGE_SIZE = 50;
   standalone: true,
   imports: [
     DatePipe,
-    DataTableComponent,
     InvoicesListComponent,
+    SubscriptionsListComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
   ],
@@ -46,32 +45,6 @@ export class CustomerDetailPageComponent implements OnInit {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  readonly subscriptionTableConfig: TableConfig<Subscription> = {
-    columns: [
-      { key: 'state', header: 'State' },
-      { key: 'handle', header: 'Handle' },
-      { key: 'plan', header: 'Plan' },
-      {
-        key: 'created',
-        header: 'Created',
-        formatter: (row) =>
-          this.datePipe.transform(row.created, 'mediumDate') ?? '',
-      },
-    ],
-    actions: [
-      {
-        id: 'pause',
-        label: 'Pause',
-        visible: (row) => row.state === 'active',
-      },
-      {
-        id: 'reactivate',
-        label: 'Reactivate',
-        visible: (row) => row.state === 'on_hold',
-      },
-    ],
-  };
-
   ngOnInit(): void {
     this.route.paramMap
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -81,19 +54,16 @@ export class CustomerDetailPageComponent implements OnInit {
       });
   }
 
-  onSubscriptionAction(event: { actionId: string; row: Subscription }): void {
-    const { actionId, row } = event;
-    if (actionId === 'pause') {
-      this.subscriptionService.pauseSubscription(row.handle).subscribe({
-        next: () => this.loadData(this.customer()?.handle ?? ''),
-        error: () => this.error.set('Failed to pause subscription'),
+  refreshSubscriptions(): void {
+    const handle = this.customer()?.handle;
+    if (!handle) return;
+    this.subscriptionService
+      .getSubscriptionsForCustomer(handle, PAGE_SIZE)
+      .subscribe({
+        next: (res) => this.subscriptions.set(res.content),
+        error: (err: ApiError) =>
+          this.error.set(err.message ?? 'Failed to refresh subscriptions'),
       });
-    } else if (actionId === 'reactivate') {
-      this.subscriptionService.reactivateSubscription(row.handle).subscribe({
-        next: () => this.loadData(this.customer()?.handle ?? ''),
-        error: () => this.error.set('Failed to reactivate subscription'),
-      });
-    }
   }
 
   private loadData(handle: string): void {

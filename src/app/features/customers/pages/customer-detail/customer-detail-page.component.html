@@ -27,10 +27,9 @@
       @if (subscriptions().length === 0) {
         <empty-state message="No subscriptions." />
       } @else {
-        <data-table
-          [data]="subscriptions()"
-          [config]="subscriptionTableConfig"
-          (actionClick)="onSubscriptionAction($event)"
+        <subscriptions-list
+          [subscriptions]="subscriptions()"
+          (refreshRequested)="refreshSubscriptions()"
         />
       }
     </div>

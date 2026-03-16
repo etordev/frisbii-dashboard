@@ -1,0 +1,33 @@
+/* State badge styling for subscription state cells inside data-table */
+:host ::ng-deep td.state-badge {
+  display: table-cell;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+:host ::ng-deep td.state-active {
+  background-color: #c8e6d0;
+  color: #1a3d22;
+}
+
+:host ::ng-deep td.state-cancelled {
+  background-color: #e8e9ec;
+  color: #6e7076;
+}
+
+:host ::ng-deep td.state-expired {
+  background-color: #e8e9ec;
+  color: #6e7076;
+}
+
+:host ::ng-deep td.state-on_hold {
+  background-color: #f0e6c4;
+  color: #5c5016;
+}
+
+:host ::ng-deep td.state-unknown {
+  background-color: #e8e9ec;
+  color: #6e7076;
+}
