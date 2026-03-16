@@ -11,9 +11,7 @@ export interface Customer {
   created: string;
 }
 
-/**
- * Response shape for GET /v1/list/customer.
- */
+/* Response shape for GET /v1/list/customer. */
 export interface CustomerListResponse {
   content: Customer[];
   size: number;

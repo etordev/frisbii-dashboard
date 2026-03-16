@@ -1,7 +1,4 @@
-/**
- * Invoice model for list view (Frisbii/Reepay API).
- * @see https://api.reepay.com/openapi.json
- */
+/* Invoice model for list view. */
 export interface Invoice {
   id: string;
   handle: string;
@@ -11,9 +8,7 @@ export interface Invoice {
   created: string;
 }
 
-/**
- * Response shape for GET /v1/list/invoice.
- */
+/* Response shape for GET /v1/list/invoice */
 export interface InvoiceListResponse {
   content: Invoice[];
   size: number;

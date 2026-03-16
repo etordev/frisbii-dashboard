@@ -1,3 +1,42 @@
 <section>
-    <h2>Customer detail</h2>
+  <h2>Customer: {{ customerHandle() }}</h2>
+
+  <div class="table-section">
+    <h3>Subscriptions</h3>
+    @if (subscriptionsLoading()) {
+      <app-loading-spinner />
+    } @else if (subscriptionsError()) {
+      <app-empty-state
+        [message]="subscriptionsError()!"
+        type="error"
+      />
+    } @else if (subscriptions().length === 0) {
+      <app-empty-state message="No subscriptions." />
+    } @else {
+      <app-data-table
+        [data]="subscriptions()"
+        [config]="subscriptionTableConfig"
+        (actionClick)="onSubscriptionAction($event)"
+      />
+    }
+  </div>
+
+  <div class="table-section">
+    <h3>Invoices</h3>
+    @if (invoicesLoading()) {
+      <app-loading-spinner />
+    } @else if (invoicesError()) {
+      <app-empty-state
+        [message]="invoicesError()!"
+        type="error"
+      />
+    } @else if (invoices().length === 0) {
+      <app-empty-state message="No invoices." />
+    } @else {
+      <app-data-table
+        [data]="invoices()"
+        [config]="invoiceTableConfig"
+      />
+    }
+  </div>
 </section>

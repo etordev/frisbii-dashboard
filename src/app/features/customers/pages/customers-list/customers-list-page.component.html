@@ -19,27 +19,10 @@
   } @else if (customers().length === 0) {
     <app-empty-state message="No customers found." />
   } @else {
-    <table>
-      <thead>
-        <tr>
-          <th>Handle</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Company</th>
-          <th>Created</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (customer of customers(); track customer.handle) {
-          <tr (click)="goToCustomer(customer.handle)" class="clickable-row">
-            <td>{{ customer.handle }}</td>
-            <td>{{ customer.first_name }} {{ customer.last_name }}</td>
-            <td>{{ customer.email }}</td>
-            <td>{{ customer.company }}</td>
-            <td>{{ customer.created | date : 'mediumDate' }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <app-data-table
+      [data]="customers()"
+      [config]="customerTableConfig"
+      (rowClick)="goToCustomer($event.handle)"
+    />
   }
 </section>

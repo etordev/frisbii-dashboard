@@ -9,9 +9,7 @@ export interface Subscription {
   created: string;
 }
 
-/**
- * Response shape for GET /v1/list/subscription.
- */
+/* Response shape for GET /v1/list/subscription. */
 export interface SubscriptionListResponse {
   content: Subscription[];
   size: number;
