@@ -12,7 +12,7 @@ import { DataTableComponent } from '../../../../shared/components/data-table/dat
 import { ApiError } from '../../../../core/services/api.service';
 import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 30;
 
 @Component({
   selector: 'customers-list-page',
@@ -56,8 +56,10 @@ export class CustomersListPageComponent implements OnInit {
 
   readonly customers = signal<Customer[]>([]);
   readonly loading = signal(false);
+  readonly loadingMore = signal(false);
   readonly error = signal<string | null>(null);
   readonly searchTerm = signal('');
+  readonly nextPageToken = signal<string | null>(null);
 
   ngOnInit(): void {
     this.checkRoute();
@@ -100,15 +102,63 @@ export class CustomersListPageComponent implements OnInit {
   private loadList(handle?: string): void {
     this.loading.set(true);
     this.error.set(null);
+    this.nextPageToken.set(null);
     this.customerService.getCustomers(PAGE_SIZE, handle).subscribe({
       next: (res) => {
         this.customers.set(res.content);
+        this.nextPageToken.set(res.next_page_token ?? null);
         this.loading.set(false);
       },
       error: (err: ApiError) => {
         this.error.set(this.errorMapper.toMessage(err, 'customers.list'));
         this.customers.set([]);
+        this.nextPageToken.set(null);
         this.loading.set(false);
+      },
+    });
+  }
+
+  onTableScroll(event: Event): void {
+    const el = event.target as HTMLElement | null;
+    if (!el) return;
+
+    const thresholdPx = 80;
+    const reachedBottom =
+      el.scrollTop + el.clientHeight >= el.scrollHeight - thresholdPx;
+
+    if (reachedBottom) {
+      this.loadMore();
+    }
+  }
+
+  private loadMore(): void {
+    const token = this.nextPageToken();
+    if (!token) return;
+    if (this.loading() || this.loadingMore()) return;
+    if (this.error()) return;
+
+    this.loadingMore.set(true);
+    const handle = this.searchTerm().trim() || undefined;
+
+    this.customerService.getCustomers(PAGE_SIZE, handle, token).subscribe({
+      next: (res) => {
+        const existing = this.customers();
+        const existingHandles = new Set(existing.map((c) => c.handle));
+        const newItems = res.content.filter((c) => !existingHandles.has(c.handle));
+
+        this.customers.set([...existing, ...newItems]);
+
+        const nextToken = res.next_page_token ?? null;
+        // If the backend returns no new items or repeats the same token,
+        // stop pagination to avoid looping on the same page.
+        this.nextPageToken.set(
+          newItems.length === 0 || nextToken === token ? null : nextToken,
+        );
+        this.loadingMore.set(false);
+      },
+      error: (err: ApiError) => {
+        this.error.set(this.errorMapper.toMessage(err, 'customers.list'));
+        this.loadingMore.set(false);
       },
     });
   }

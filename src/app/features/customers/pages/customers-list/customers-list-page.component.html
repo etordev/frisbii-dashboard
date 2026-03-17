@@ -1,28 +1,40 @@
-<section>
-  <h2>Customers</h2>
+<section class="page">
+  <header class="page__header">
+    <h2>Customers</h2>
+  </header>
 
-  <div class="search-row">
-    <label for="search-handle">Search by handle</label>
-    <input
-      id="search-handle"
-      type="text"
-      [value]="searchTerm()"
-      (input)="onSearchInput($event)"
-      placeholder="Filter by handle…"
-    />
+  <div class="page__toolbar">
+    <div class="search-row">
+      <label for="search-handle">Search by handle</label>
+      <input
+        id="search-handle"
+        type="text"
+        [value]="searchTerm()"
+        (input)="onSearchInput($event)"
+        placeholder="Filter by handle…"
+      />
+    </div>
   </div>
 
-  @if (loading()) {
-    <loading-spinner />
-  } @else if (error()) {
-    <empty-state [message]="error()!" type="error" />
-  } @else if (customers().length === 0) {
-    <empty-state message="No customers found." />
-  } @else {
-    <data-table
-      [data]="customers()"
-      [config]="customerTableConfig"
-      (rowClick)="goToCustomer($event.handle)"
-    />
-  }
+  <div class="content">
+    <div class="table-container" (scroll)="onTableScroll($event)">
+      @if (loading()) {
+        <loading-spinner />
+      } @else if (error()) {
+        <empty-state [message]="error()!" type="error" />
+      } @else if (customers().length === 0) {
+        <empty-state message="No customers found." />
+      } @else {
+        <data-table
+          [data]="customers()"
+          [config]="customerTableConfig"
+          (rowClick)="goToCustomer($event.handle)"
+        />
+
+        @if (loadingMore()) {
+          <div class="table-loading-more">Loading more…</div>
+        }
+      }
+    </div>
+  </div>
 </section>
