@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { ErrorMapperService } from './error-mapper.service';
-import type { ApiError } from './api.service';
+import type { ApiError } from '../api/api.service';
 
 describe('ErrorMapperService', () => {
   it('maps network error (status 0)', () => {

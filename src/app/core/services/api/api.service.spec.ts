@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { describe, expect, it } from 'vitest';
 import { ApiService } from './api.service';
-import { API_CONFIG } from '../config/api.config';
+import { API_CONFIG } from '../../config/api.config';
 
 describe('ApiService', () => {
   it('GET builds URL with baseUrl and leading slash', () => {

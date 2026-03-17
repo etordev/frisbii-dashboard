@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 import { CustomerService } from './customer.service';
-import { ApiService } from '../../../core/services/api.service';
-import type { CustomerListResponse } from '../../../shared/models/customer.model';
+import { ApiService } from '../../../../core/services/api/api.service';
+import type { CustomerListResponse } from '../../../../shared/models/customer.model';
 
 describe('CustomerService', () => {
   it('calls /v1/list/customer with size + handle_contains + token params', () => {

@@ -3,10 +3,10 @@ import { DatePipe } from '@angular/common';
 import { Subscription } from '../../../../shared/models/subscription.model';
 import { TableConfig } from '../../../../shared/models/table-config.model';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
-import { SubscriptionService } from '../../services/subscription.service';
-import { ApiError } from '../../../../core/services/api.service';
-import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
-import { ToastService } from '../../../../core/services/toast.service';
+import { SubscriptionService } from '../../services/subscription/subscription.service';
+import { ApiError } from '../../../../core/services/api/api.service';
+import { ErrorMapperService } from '../../../../core/services/error-mapper/error-mapper.service';
+import { ToastService } from '../../../../core/services/toast/toast.service';
 
 const KNOWN_STATES = ['active', 'cancelled', 'expired', 'on_hold'] as const;
 export type SubscriptionStateDisplay =

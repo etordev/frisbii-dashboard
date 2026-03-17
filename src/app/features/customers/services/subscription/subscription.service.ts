@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../core/services/api.service';
-import { SubscriptionListResponse, Subscription } from '../../../shared/models/subscription.model';
+import { ApiService } from '../../../../core/services/api/api.service';
+import { SubscriptionListResponse, Subscription } from '../../../../shared/models/subscription.model';
 
 @Injectable({ providedIn: 'root' })
 export class SubscriptionService {

@@ -3,14 +3,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
-import { CustomerService } from '../../services/customer.service';
+import { CustomerService } from '../../services/customer/customer.service';
 import { Customer } from '../../../../shared/models/customer.model';
 import { TableConfig } from '../../../../shared/models/table-config.model';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
-import { ApiError } from '../../../../core/services/api.service';
-import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
+import { ApiError } from '../../../../core/services/api/api.service';
+import { ErrorMapperService } from '../../../../core/services/error-mapper/error-mapper.service';
 
 const PAGE_SIZE = 30;
 

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { API_CONFIG, ApiConfig } from '../config/api.config';
+import { API_CONFIG, ApiConfig } from '../../config/api.config';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 

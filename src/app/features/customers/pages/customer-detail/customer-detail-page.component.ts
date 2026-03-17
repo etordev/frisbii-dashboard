@@ -3,9 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { CustomerService } from '../../services/customer.service';
-import { SubscriptionService } from '../../services/subscription.service';
-import { InvoiceService } from '../../services/invoice.service';
+import { CustomerService } from '../../services/customer/customer.service';
+import { SubscriptionService } from '../../services/subscription/subscription.service';
+import { InvoiceService } from '../../services/invoice/invoice.service';
 import { Customer } from '../../../../shared/models/customer.model';
 import { Subscription, SubscriptionListResponse } from '../../../../shared/models/subscription.model';
 import { Invoice, InvoiceListResponse } from '../../../../shared/models/invoice.model';
@@ -13,9 +13,9 @@ import { InvoicesListComponent } from '../../components/invoices-list/invoices-l
 import { SubscriptionsListComponent } from '../../components/subscriptions-list/subscriptions-list.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
-import { ApiError } from '../../../../core/services/api.service';
-import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
-import { ToastService } from '../../../../core/services/toast.service';
+import { ApiError } from '../../../../core/services/api/api.service';
+import { ErrorMapperService } from '../../../../core/services/error-mapper/error-mapper.service';
+import { ToastService } from '../../../../core/services/toast/toast.service';
 
 const SUBSCRIPTIONS_PAGE_SIZE = 10;
 const INVOICES_PAGE_SIZE = 10;

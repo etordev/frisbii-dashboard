@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiError } from './api.service';
+import { ApiError } from '../api/api.service';
 
 export type ErrorContext =
   | 'customers.list'

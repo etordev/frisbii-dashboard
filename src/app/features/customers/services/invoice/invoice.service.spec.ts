@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 import { InvoiceService } from './invoice.service';
-import { ApiService } from '../../../core/services/api.service';
-import type { InvoiceListResponse } from '../../../shared/models/invoice.model';
+import { ApiService } from '../../../../core/services/api/api.service';
+import type { InvoiceListResponse } from '../../../../shared/models/invoice.model';
 
 describe('InvoiceService', () => {
   it('calls /v1/list/invoice with customer + size + token params', () => {
