@@ -2,6 +2,7 @@
   [data]="subscriptions()"
   [config]="subscriptionTableConfig"
   [height]="350"
+  [loadingMore]="loadingMore()"
   (bottomReached)="bottomReached.emit()"
   (actionClick)="onActionClick($event)"
 />

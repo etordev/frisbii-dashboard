@@ -14,11 +14,12 @@ import { NgClass } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { TableConfig } from '../../models/table-config.model';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'data-table',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, LoadingSpinnerComponent],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
 })
@@ -31,6 +32,7 @@ export class DataTableComponent<T extends object = object> implements AfterViewI
   data = input.required<T[]>();
   config = input.required<TableConfig<T>>();
   height = input<string | number | undefined>(undefined);
+  loadingMore = input<boolean>(false);
 
   rowClick = output<T>();
   actionClick = output<{ actionId: string; row: T }>();

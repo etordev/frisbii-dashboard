@@ -22,6 +22,7 @@ export type SubscriptionStateDisplay =
 })
 export class SubscriptionsListComponent {
   subscriptions = input.required<Subscription[]>();
+  loadingMore = input<boolean>(false);
   refreshRequested = output<void>();
   actionError = output<string>();
   bottomReached = output<void>();

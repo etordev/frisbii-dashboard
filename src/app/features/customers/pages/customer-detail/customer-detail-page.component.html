@@ -43,13 +43,11 @@
       } @else {
         <subscriptions-list
           [subscriptions]="subscriptions()"
+          [loadingMore]="loadingMoreSubscriptions()"
           (bottomReached)="loadMoreSubscriptions()"
           (refreshRequested)="refreshSubscriptions()"
           (actionError)="onSubscriptionActionError($event)"
         />
-        @if (loadingMoreSubscriptions()) {
-          <div class="table-loading-more">Loading more…</div>
-        }
       }
     </div>
 
@@ -60,11 +58,9 @@
       } @else {
         <invoices-list
           [invoices]="invoices()"
+          [loadingMore]="loadingMoreInvoices()"
           (bottomReached)="loadMoreInvoices()"
         />
-        @if (loadingMoreInvoices()) {
-          <div class="table-loading-more">Loading more…</div>
-        }
       }
     </div>
   }

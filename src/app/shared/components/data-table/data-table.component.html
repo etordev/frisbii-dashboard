@@ -43,4 +43,10 @@
       }
     </tbody>
   </table>
+
+  @if (loadingMore()) {
+    <div class="table-scroll__loading-more">
+      <loading-spinner />
+    </div>
+  }
 </div>

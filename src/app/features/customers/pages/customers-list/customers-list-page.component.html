@@ -28,13 +28,10 @@
         <data-table
           [data]="customers()"
           [config]="customerTableConfig"
+          [loadingMore]="loadingMore()"
           (rowClick)="goToCustomer($event.handle)"
           (bottomReached)="onBottomReached()"
         />
-
-        @if (loadingMore()) {
-          <div class="table-loading-more">Loading more…</div>
-        }
       }
     </div>
   </div>

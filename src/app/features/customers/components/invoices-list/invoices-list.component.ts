@@ -24,6 +24,7 @@ export type InvoiceStateDisplay =
 })
 export class InvoicesListComponent {
   invoices = input.required<Invoice[]>();
+  loadingMore = input<boolean>(false);
   bottomReached = output<void>();
   private readonly datePipe = inject(DatePipe);
 
