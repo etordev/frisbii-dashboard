@@ -14,6 +14,7 @@ import { SubscriptionsListComponent } from '../../components/subscriptions-list/
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { ApiError } from '../../../../core/services/api.service';
+import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
 
 const PAGE_SIZE = 50;
 
@@ -39,6 +40,7 @@ export class CustomerDetailPageComponent implements OnInit {
   private readonly invoiceService = inject(InvoiceService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly datePipe = inject(DatePipe);
+  private readonly errorMapper = inject(ErrorMapperService);
 
   readonly routeHandle = signal<string>('');
   readonly customer = signal<Customer | null>(null);
@@ -69,7 +71,9 @@ export class CustomerDetailPageComponent implements OnInit {
       .subscribe({
         next: (res) => this.subscriptions.set(res.content),
         error: (err: ApiError) =>
-          this.error.set(err.message ?? 'Failed to refresh subscriptions'),
+          this.error.set(
+            this.errorMapper.toMessage(err, 'subscriptions.refresh')
+          ),
       });
   }
 
@@ -99,7 +103,7 @@ export class CustomerDetailPageComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err: ApiError) => {
-        this.error.set(err.message ?? 'Failed to load customer data');
+        this.error.set(this.errorMapper.toMessage(err, 'customer.detail.load'));
         this.customer.set(null);
         this.subscriptions.set([]);
         this.invoices.set([]);

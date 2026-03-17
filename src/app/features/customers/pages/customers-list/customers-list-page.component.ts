@@ -10,6 +10,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
 import { ApiError } from '../../../../core/services/api.service';
+import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
 
 const PAGE_SIZE = 50;
 
@@ -31,6 +32,7 @@ export class CustomersListPageComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly datePipe = inject(DatePipe);
+  private readonly errorMapper = inject(ErrorMapperService);
   private readonly searchChanges$ = new Subject<string>();
 
   readonly customerTableConfig: TableConfig<Customer> = {
@@ -104,7 +106,7 @@ export class CustomersListPageComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err: ApiError) => {
-        this.error.set(err.message ?? 'Failed to load customers');
+        this.error.set(this.errorMapper.toMessage(err, 'customers.list'));
         this.customers.set([]);
         this.loading.set(false);
       },

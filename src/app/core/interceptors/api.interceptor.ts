@@ -24,7 +24,7 @@ export const apiInterceptor: HttpInterceptorFn = (
 
   return next(authorizedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Let ApiService handle shaping the error for its callers.
+      // ApiService handles shaping the error for its callers.
       return throwError(() => error);
     }),
   );
