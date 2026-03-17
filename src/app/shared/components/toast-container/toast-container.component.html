@@ -1,0 +1,16 @@
+<div
+  class="toast-stack"
+  [attr.aria-live]="ariaLive()"
+  aria-atomic="true"
+>
+  @for (t of toasts(); track t.id) {
+    <div
+      class="toast"
+      [ngClass]="['toast--' + t.type, t.leaving ? 'toast--leaving' : '']"
+      [attr.role]="t.type === 'error' ? 'alert' : 'status'"
+    >
+      <div class="toast__message">{{ t.message }}</div>
+    </div>
+  }
+</div>
+

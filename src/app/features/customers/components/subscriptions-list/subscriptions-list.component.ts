@@ -6,6 +6,7 @@ import { DataTableComponent } from '../../../../shared/components/data-table/dat
 import { SubscriptionService } from '../../services/subscription.service';
 import { ApiError } from '../../../../core/services/api.service';
 import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 const KNOWN_STATES = ['active', 'cancelled', 'expired', 'on_hold'] as const;
 export type SubscriptionStateDisplay =
@@ -28,6 +29,7 @@ export class SubscriptionsListComponent {
   private readonly subscriptionService = inject(SubscriptionService);
   private readonly datePipe = inject(DatePipe);
   private readonly errorMapper = inject(ErrorMapperService);
+  private readonly toast = inject(ToastService);
 
   readonly subscriptionTableConfig: TableConfig<Subscription> = {
     columns: [
@@ -74,19 +76,27 @@ export class SubscriptionsListComponent {
     const { actionId, row } = event;
     if (actionId === 'pause') {
       this.subscriptionService.pauseSubscription(row.handle).subscribe({
-        next: () => this.refreshRequested.emit(),
-        error: (err: ApiError) =>
-          this.actionError.emit(
-            this.errorMapper.toMessage(err, 'subscriptions.pause')
-          ),
+        next: () => {
+          this.toast.success(`Subscription paused: ${row.handle}`);
+          this.refreshRequested.emit();
+        },
+        error: (err: ApiError) => {
+          const message = this.errorMapper.toMessage(err, 'subscriptions.pause');
+          this.toast.error(message);
+          this.actionError.emit(message);
+        },
       });
     } else if (actionId === 'reactivate') {
       this.subscriptionService.reactivateSubscription(row.handle).subscribe({
-        next: () => this.refreshRequested.emit(),
-        error: (err: ApiError) =>
-          this.actionError.emit(
-            this.errorMapper.toMessage(err, 'subscriptions.unpause')
-          ),
+        next: () => {
+          this.toast.success(`Subscription reactivated: ${row.handle}`);
+          this.refreshRequested.emit();
+        },
+        error: (err: ApiError) => {
+          const message = this.errorMapper.toMessage(err, 'subscriptions.unpause');
+          this.toast.error(message);
+          this.actionError.emit(message);
+        },
       });
     }
   }

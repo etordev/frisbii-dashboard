@@ -15,6 +15,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { ApiError } from '../../../../core/services/api.service';
 import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 const SUBSCRIPTIONS_PAGE_SIZE = 10;
 const INVOICES_PAGE_SIZE = 10;
@@ -42,6 +43,7 @@ export class CustomerDetailPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly datePipe = inject(DatePipe);
   private readonly errorMapper = inject(ErrorMapperService);
+  private readonly toast = inject(ToastService);
 
   readonly routeHandle = signal<string>('');
   readonly customer = signal<Customer | null>(null);
@@ -109,7 +111,9 @@ export class CustomerDetailPageComponent implements OnInit {
           this.loadingMoreSubscriptions.set(false);
         },
         error: (err: ApiError) => {
-          this.error.set(this.errorMapper.toMessage(err, 'subscriptions.more'));
+          const message = this.errorMapper.toMessage(err, 'subscriptions.more');
+          this.toast.error(message);
+          this.error.set(message);
           this.loadingMoreSubscriptions.set(false);
         },
       });
@@ -139,7 +143,9 @@ export class CustomerDetailPageComponent implements OnInit {
           this.loadingMoreInvoices.set(false);
         },
         error: (err: ApiError) => {
-          this.error.set(this.errorMapper.toMessage(err, 'invoices.more'));
+          const message = this.errorMapper.toMessage(err, 'invoices.more');
+          this.toast.error(message);
+          this.error.set(message);
           this.loadingMoreInvoices.set(false);
         },
       });
