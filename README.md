@@ -1,59 +1,103 @@
-# FrisbiiDashboard
+# Frisbii Subscription Management Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+Subscription management dashboard built with Angular v21 using the Frisbii API. It supports customer listing + search, customer detail (invoices/subscriptions), subscription lifecycle actions (pause/unpause), infinite scrolling, and toast notifications.
 
-## Development server
+## Requirements
 
-To start a local development server, run:
+- Node.js **20+**
+- npm **10+**
 
-```bash
-ng serve
-```
+## Setup
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Install dependencies:
 
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. Configure environment (API key is **never committed**):
+
+- Copy `src/environments/environment.example.ts` → `src/environments/environment.ts`
+- Set:
+  - `frisbiiApiKey` to your private API key (e.g. `priv_xxx`)
+  - `frisbiiApiBaseUrl` (default is `https://api.frisbii.com`)
+
+`src/environments/environment.ts` is gitignored.
+
+## Run
+
+Start the dev server:
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+Open `http://localhost:4200/`.
 
-To build the project run:
+## Build
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Unit tests
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
+## Architecture decisions
 
-For end-to-end (e2e) testing, run:
+- **Signals for state**: pages use Angular Signals for UI state (`loading`, `error`, data lists, pagination tokens).
+- **Services for API + business logic**: dedicated services per resource (`CustomerService`, `InvoiceService`, `SubscriptionService`) plus shared/core services.
+- **Auth via HTTP interceptor**: adds `Authorization: Basic ...` header using the configured API key.
+- **Reusable UI components**:
+  - `data-table`: reusable table component with optional fixed height and internal scrolling; emits `bottomReached` for infinite scroll.
+  - `toast-container` + `ToastService`: lightweight toasts without external UI libraries.
 
-```bash
-ng e2e
-```
+## Assumptions / notes
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **Pagination**: list endpoints return `next_page_token`. Requests send the token as both `page_token` and `next_page_token` to stay compatible with backend parameter naming.
+- **Chunk sizes**:
+  - Customers: initial chunk of 30
+  - Invoices/subscriptions: 10 per request (infinite scroll)
+- **No optimistic updates** for pause/unpause: action triggers a refresh after success.
 
-## Additional Resources
+## Bonus features implemented
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Service unit tests** (`*.spec.ts`) for customer/subscription/invoice/core services
+- **Toast notifications** for success/error
+- **Infinite scrolling** for customers, invoices, and subscriptions
+- **Full-height layout** with internal table scrolling (no `calc()` height hacks)
+- **Sticky table headers**
+
+## Security / dependency note
+
+`npm audit` may report **2 high vulnerabilities** from transitive dependencies (`undici` via `@angular/build`). The suggested fix requires `npm audit fix --force` (potentially breaking upgrades), so it was intentionally not applied for this challenge.
+
+## Challenges faced & how they were solved
+
+- **Avoiding “double scroll”**: used flex layouts with `overflow: hidden` on parents and a dedicated scroll container for tables.
+- **Reliable infinite scroll**: used cursor tokens + deduping to avoid repeated pages when the backend returns overlapping results.
+- **Testing services**: mocked the API layer to assert endpoint + query params without real HTTP calls.
+
+## AI usage disclosure
+
+I used **Cursor** (with its AI assistant) to accelerate implementation and reduce boilerplate. I used it primarily for:
+
+- Layout patterns for full-height flex + internal scrolling
+- Pagination/infinite scroll structure using `next_page_token`
+- Toast architecture without installing external libraries
+- Service unit test scaffolding and mocking patterns
+
+Example prompts (high level):
+- “Implement full-height table layout with internal scrolling using Flexbox”
+- “Add infinite scroll using cursor token pagination”
+- “Write unit tests for services mocking the API layer”
+- “Implement toast notifications without external libraries”
+
+What went well:
+- Faster iteration on structure/boilerplate and catching edge cases.
+
+What needed manual review:
+- Matching backend pagination parameter names and adjusting assertions/UX details to the actual app behavior.
