@@ -90,7 +90,7 @@ I used **Cursor** (with its AI assistant) to accelerate implementation and reduc
 - Toast architecture without installing external libraries
 - Service unit test scaffolding and mocking patterns
 
-Example prompts (high level):
+Example prompts:
 - “Implement full-height table layout with internal scrolling using Flexbox”
 - “Add infinite scroll using cursor token pagination”
 - “Write unit tests for services mocking the API layer”
