@@ -17,7 +17,7 @@
   </div>
 
   <div class="content">
-    <div class="table-container" (scroll)="onTableScroll($event)">
+    <div class="table-container">
       @if (loading()) {
         <loading-spinner />
       } @else if (error()) {
@@ -29,6 +29,7 @@
           [data]="customers()"
           [config]="customerTableConfig"
           (rowClick)="goToCustomer($event.handle)"
+          (bottomReached)="onBottomReached()"
         />
 
         @if (loadingMore()) {

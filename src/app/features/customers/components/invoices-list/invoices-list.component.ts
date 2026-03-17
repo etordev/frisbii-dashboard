@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Invoice } from '../../../../shared/models/invoice.model';
 import { TableConfig } from '../../../../shared/models/table-config.model';
@@ -24,6 +24,7 @@ export type InvoiceStateDisplay =
 })
 export class InvoicesListComponent {
   invoices = input.required<Invoice[]>();
+  bottomReached = output<void>();
   private readonly datePipe = inject(DatePipe);
 
   readonly invoiceTableConfig: TableConfig<Invoice> = {

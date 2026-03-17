@@ -43,9 +43,13 @@
       } @else {
         <subscriptions-list
           [subscriptions]="subscriptions()"
+          (bottomReached)="loadMoreSubscriptions()"
           (refreshRequested)="refreshSubscriptions()"
           (actionError)="onSubscriptionActionError($event)"
         />
+        @if (loadingMoreSubscriptions()) {
+          <div class="table-loading-more">Loading more…</div>
+        }
       }
     </div>
 
@@ -54,7 +58,13 @@
       @if (invoices().length === 0) {
         <empty-state message="No invoices." />
       } @else {
-        <invoices-list [invoices]="invoices()" />
+        <invoices-list
+          [invoices]="invoices()"
+          (bottomReached)="loadMoreInvoices()"
+        />
+        @if (loadingMoreInvoices()) {
+          <div class="table-loading-more">Loading more…</div>
+        }
       }
     </div>
   }

@@ -1,3 +1,14 @@
+:host {
+  display: block;
+  min-height: 0;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow: auto;
+  min-height: 0;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

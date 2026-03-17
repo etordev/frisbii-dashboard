@@ -7,8 +7,8 @@ import { CustomerService } from '../../services/customer.service';
 import { SubscriptionService } from '../../services/subscription.service';
 import { InvoiceService } from '../../services/invoice.service';
 import { Customer } from '../../../../shared/models/customer.model';
-import { Subscription } from '../../../../shared/models/subscription.model';
-import { Invoice } from '../../../../shared/models/invoice.model';
+import { Subscription, SubscriptionListResponse } from '../../../../shared/models/subscription.model';
+import { Invoice, InvoiceListResponse } from '../../../../shared/models/invoice.model';
 import { InvoicesListComponent } from '../../components/invoices-list/invoices-list.component';
 import { SubscriptionsListComponent } from '../../components/subscriptions-list/subscriptions-list.component';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
@@ -16,7 +16,8 @@ import { EmptyStateComponent } from '../../../../shared/components/empty-state/e
 import { ApiError } from '../../../../core/services/api.service';
 import { ErrorMapperService } from '../../../../core/services/error-mapper.service';
 
-const PAGE_SIZE = 50;
+const SUBSCRIPTIONS_PAGE_SIZE = 10;
+const INVOICES_PAGE_SIZE = 10;
 
 @Component({
   selector: 'customer-detail-page',
@@ -47,7 +48,11 @@ export class CustomerDetailPageComponent implements OnInit {
   readonly subscriptions = signal<Subscription[]>([]);
   readonly invoices = signal<Invoice[]>([]);
   readonly loading = signal(false);
+  readonly loadingMoreSubscriptions = signal(false);
+  readonly loadingMoreInvoices = signal(false);
   readonly error = signal<string | null>(null);
+  readonly nextSubscriptionsPageToken = signal<string | null>(null);
+  readonly nextInvoicesPageToken = signal<string | null>(null);
 
   ngOnInit(): void {
     this.route.paramMap
@@ -67,13 +72,76 @@ export class CustomerDetailPageComponent implements OnInit {
     const handle = this.customer()?.handle;
     if (!handle) return;
     this.subscriptionService
-      .getSubscriptionsForCustomer(handle, PAGE_SIZE)
+      .getSubscriptionsForCustomer(handle, SUBSCRIPTIONS_PAGE_SIZE)
       .subscribe({
-        next: (res) => this.subscriptions.set(res.content),
+        next: (res) => {
+          this.subscriptions.set(res.content);
+          this.nextSubscriptionsPageToken.set(res.next_page_token ?? null);
+        },
         error: (err: ApiError) =>
           this.error.set(
             this.errorMapper.toMessage(err, 'subscriptions.refresh')
           ),
+      });
+  }
+
+  loadMoreSubscriptions(): void {
+    const customerHandle = this.customer()?.handle;
+    const token = this.nextSubscriptionsPageToken();
+    if (!customerHandle || !token) return;
+    if (this.loading() || this.loadingMoreSubscriptions()) return;
+    if (this.error()) return;
+
+    this.loadingMoreSubscriptions.set(true);
+    this.subscriptionService
+      .getSubscriptionsForCustomer(customerHandle, SUBSCRIPTIONS_PAGE_SIZE, token)
+      .subscribe({
+        next: (res: SubscriptionListResponse) => {
+          const existing = this.subscriptions();
+          const existingHandles = new Set(existing.map((s) => s.handle));
+          const newItems = res.content.filter((s) => !existingHandles.has(s.handle));
+          this.subscriptions.set([...existing, ...newItems]);
+
+          const nextToken = res.next_page_token ?? null;
+          this.nextSubscriptionsPageToken.set(
+            newItems.length === 0 || nextToken === token ? null : nextToken,
+          );
+          this.loadingMoreSubscriptions.set(false);
+        },
+        error: (err: ApiError) => {
+          this.error.set(this.errorMapper.toMessage(err, 'subscriptions.more'));
+          this.loadingMoreSubscriptions.set(false);
+        },
+      });
+  }
+
+  loadMoreInvoices(): void {
+    const customerHandle = this.customer()?.handle;
+    const token = this.nextInvoicesPageToken();
+    if (!customerHandle || !token) return;
+    if (this.loading() || this.loadingMoreInvoices()) return;
+    if (this.error()) return;
+
+    this.loadingMoreInvoices.set(true);
+    this.invoiceService
+      .getInvoicesForCustomer(customerHandle, INVOICES_PAGE_SIZE, token)
+      .subscribe({
+        next: (res: InvoiceListResponse) => {
+          const existing = this.invoices();
+          const existingIds = new Set(existing.map((i) => i.id));
+          const newItems = res.content.filter((i) => !existingIds.has(i.id));
+          this.invoices.set([...existing, ...newItems]);
+
+          const nextToken = res.next_page_token ?? null;
+          this.nextInvoicesPageToken.set(
+            newItems.length === 0 || nextToken === token ? null : nextToken,
+          );
+          this.loadingMoreInvoices.set(false);
+        },
+        error: (err: ApiError) => {
+          this.error.set(this.errorMapper.toMessage(err, 'invoices.more'));
+          this.loadingMoreInvoices.set(false);
+        },
       });
   }
 
@@ -90,16 +158,18 @@ export class CustomerDetailPageComponent implements OnInit {
     this.error.set(null);
     forkJoin({
       customer: this.customerService.getCustomer(handle),
-      invoices: this.invoiceService.getInvoicesForCustomer(handle, PAGE_SIZE),
+      invoices: this.invoiceService.getInvoicesForCustomer(handle, INVOICES_PAGE_SIZE),
       subscriptions: this.subscriptionService.getSubscriptionsForCustomer(
         handle,
-        PAGE_SIZE
+        SUBSCRIPTIONS_PAGE_SIZE
       ),
     }).subscribe({
       next: ({ customer, invoices, subscriptions }) => {
         this.customer.set(customer);
         this.invoices.set(invoices.content);
         this.subscriptions.set(subscriptions.content);
+        this.nextInvoicesPageToken.set(invoices.next_page_token ?? null);
+        this.nextSubscriptionsPageToken.set(subscriptions.next_page_token ?? null);
         this.loading.set(false);
       },
       error: (err: ApiError) => {
@@ -107,6 +177,8 @@ export class CustomerDetailPageComponent implements OnInit {
         this.customer.set(null);
         this.subscriptions.set([]);
         this.invoices.set([]);
+        this.nextInvoicesPageToken.set(null);
+        this.nextSubscriptionsPageToken.set(null);
         this.loading.set(false);
       },
     });

@@ -118,17 +118,8 @@ export class CustomersListPageComponent implements OnInit {
     });
   }
 
-  onTableScroll(event: Event): void {
-    const el = event.target as HTMLElement | null;
-    if (!el) return;
-
-    const thresholdPx = 80;
-    const reachedBottom =
-      el.scrollTop + el.clientHeight >= el.scrollHeight - thresholdPx;
-
-    if (reachedBottom) {
-      this.loadMore();
-    }
+  onBottomReached(): void {
+    this.loadMore();
   }
 
   private loadMore(): void {

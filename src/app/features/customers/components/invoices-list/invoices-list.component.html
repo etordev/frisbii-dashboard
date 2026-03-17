@@ -1,4 +1,6 @@
 <data-table
   [data]="invoices()"
   [config]="invoiceTableConfig"
+  [height]="350"
+  (bottomReached)="bottomReached.emit()"
 />

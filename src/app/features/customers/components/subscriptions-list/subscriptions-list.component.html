@@ -1,5 +1,7 @@
 <data-table
   [data]="subscriptions()"
   [config]="subscriptionTableConfig"
+  [height]="350"
+  (bottomReached)="bottomReached.emit()"
   (actionClick)="onActionClick($event)"
 />

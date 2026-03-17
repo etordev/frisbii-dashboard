@@ -5,6 +5,8 @@ export type ErrorContext =
   | 'customers.list'
   | 'customer.detail.load'
   | 'subscriptions.refresh'
+  | 'subscriptions.more'
+  | 'invoices.more'
   | 'subscriptions.pause'
   | 'subscriptions.unpause'
   | 'unknown';

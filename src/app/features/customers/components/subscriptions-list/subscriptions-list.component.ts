@@ -23,6 +23,7 @@ export class SubscriptionsListComponent {
   subscriptions = input.required<Subscription[]>();
   refreshRequested = output<void>();
   actionError = output<string>();
+  bottomReached = output<void>();
 
   private readonly subscriptionService = inject(SubscriptionService);
   private readonly datePipe = inject(DatePipe);
