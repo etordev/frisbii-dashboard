@@ -24,7 +24,6 @@ const INVOICES_PAGE_SIZE = 10;
   selector: 'customer-detail-page',
   standalone: true,
   imports: [
-    DatePipe,
     RouterLink,
     InvoicesListComponent,
     SubscriptionsListComponent,

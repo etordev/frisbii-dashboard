@@ -16,7 +16,7 @@ export type SubscriptionStateDisplay =
 @Component({
   selector: 'subscriptions-list',
   standalone: true,
-  imports: [DatePipe, DataTableComponent],
+  imports: [DataTableComponent],
   templateUrl: './subscriptions-list.component.html',
   styleUrl: './subscriptions-list.component.css',
 })

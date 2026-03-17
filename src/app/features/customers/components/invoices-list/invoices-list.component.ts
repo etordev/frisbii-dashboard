@@ -18,7 +18,7 @@ export type InvoiceStateDisplay =
 @Component({
   selector: 'invoices-list',
   standalone: true,
-  imports: [DatePipe, DataTableComponent],
+  imports: [DataTableComponent],
   templateUrl: './invoices-list.component.html',
   styleUrl: './invoices-list.component.css',
 })

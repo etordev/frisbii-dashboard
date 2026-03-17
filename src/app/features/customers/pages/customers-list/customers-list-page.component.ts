@@ -18,7 +18,6 @@ const PAGE_SIZE = 30;
   selector: 'customers-list-page',
   standalone: true,
   imports: [
-    DatePipe,
     LoadingSpinnerComponent,
     EmptyStateComponent,
     DataTableComponent,
